@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "rack_request_blocker"
   spec.version       = RackRequestBlocker::VERSION
   spec.authors       = ["Dan Dorman"]
-  spec.email         = ["dan.dorman@gmail.com"]
+  spec.email         = ["ddorman@instructure.com"]
   spec.summary       = %q{TODO: Write a short summary. Required.}
   spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = ""
@@ -18,6 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "atomic", "~> 1.1.16"
+
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec", "~> 3.1.0"
 end
