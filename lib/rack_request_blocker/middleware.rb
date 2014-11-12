@@ -4,43 +4,48 @@ module RackRequestBlocker
   class Middleware
     # Public: Returns an Atomic Integer representing the number of active
     # requests.
+    def self.active_requests
+      @active_requests ||= Atomic.new(0)
+    end
+
+    # Public: Access to the value stored in `@active_requests`.
     def self.active_request_count
-      @active_request_count ||= Atomic.new(0)
+      active_requests.value
     end
 
     # Public: Returns an Atomic boolean representing whether to block incoming
     # requests.
-    def self.block_requests
-      @block_requests ||= Atomic.new(false)
+    def self.request_blocker
+      @request_blocker ||= Atomic.new(false)
     end
 
     # Public: Disable further requests.
     #
     # Returns nothing.
-    def self.block_requests!
-      block_requests.update { true }
+    def self.block_requests
+      request_blocker.update { true }
     end
 
     # Public: Enable further requests.
     #
     # Returns nothing.
-    def self.allow_requests!
-      block_requests.update { false }
+    def self.allow_requests
+      request_blocker.update { false }
     end
 
     # Public: Initializes the Middleware.
     #
     # app - A Rack application.
-    # active_request_count: - Blurgh.
-    # block_requests: - Blurgh.
+    # active_requests: - Blurgh.
+    # request_blocker: - Blurgh.
     #
     # Returns nothing.
     def initialize(app,
-                   active_request_count: self.class.active_request_count,
-                   block_requests: self.class.block_requests)
+                   active_requests: self.class.active_requests,
+                   request_blocker: self.class.request_blocker)
       @app = app
-      @active_request_count = active_request_count
-      @block_requests = block_requests
+      @active_requests = active_requests
+      @request_blocker = request_blocker
     end
 
     # Public: Calls the middleware.
@@ -66,19 +71,19 @@ module RackRequestBlocker
     #
     # Returns nothing.
     def increment_active_requests
-      @active_request_count.update { |count| count + 1 }
+      @active_requests.update { |count| count + 1 }
     end
 
     # Internal: Decrement the number of active requests.
     #
     # Returns nothing.
     def decrement_active_requests
-      @active_request_count.update { |count| count - 1 }
+      @active_requests.update { |count| count - 1 }
     end
 
     # Internal: Whether to block incoming requests.
     def block_requests?
-      @block_requests.value
+      @request_blocker.value
     end
 
     # Internal: Generate a 503 Service Unavailable response.

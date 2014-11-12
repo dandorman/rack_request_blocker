@@ -3,8 +3,8 @@ require "rack_request_blocker"
 module RackRequestBlocker
   describe Middleware do
     before(:each) do
-      RackRequestBlocker::Middleware.active_request_count.update { 0 }
-      RackRequestBlocker::Middleware.allow_requests!
+      RackRequestBlocker::Middleware.active_requests.update { 0 }
+      RackRequestBlocker::Middleware.allow_requests
     end
 
     describe "#call" do
@@ -16,11 +16,11 @@ module RackRequestBlocker
 
       it "increments then decrements the active-request count" do
         request_count = double("atomic count")
-        count = spy("count")
+        count = spy("count value")
         allow(request_count).to receive(:update).and_yield(count)
 
         middleware = described_class.new(app,
-                                         active_request_count: request_count)
+                                         active_requests: request_count)
         middleware.call({})
 
         expect(count).to have_received(:+).with(1)
@@ -29,7 +29,7 @@ module RackRequestBlocker
 
       context "when requests are blocked" do
         before(:each) do
-          RackRequestBlocker::Middleware.block_requests!
+          RackRequestBlocker::Middleware.block_requests
         end
 
         it "returns a 503 response" do
@@ -44,7 +44,7 @@ module RackRequestBlocker
 
       context "when requests are not blocked" do
         before(:each) do
-          RackRequestBlocker::Middleware.allow_requests!
+          RackRequestBlocker::Middleware.allow_requests
         end
 
         it "sends app#call" do
