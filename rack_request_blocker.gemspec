@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.name          = "rack_request_blocker"
   spec.version       = RackRequestBlocker::VERSION
   spec.authors       = ["Dan Dorman"]
-  spec.email         = ["ddorman@instructure.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.email         = ["dan.dorman@gmail.com"]
+  spec.summary       = %q{Inserts a request-blocking Rack middleware for full-stack testing.}
+  spec.description   = %q{Inserts a middleware at the top of the stack that stops further requests and waits for in-flight requests to complete before proceeding. This is helpful for Capybara full-stack tests where AJAX requests still in-flight interfere with test tear-down. Based on "Tearing Down Capybara Tests of AJAX Pages" by Joel Turkel at Salsify. <http://blog.salsify.com/engineering/tearing-capybara-ajax-tests>}
   spec.homepage      = ""
   spec.license       = "MIT"
 

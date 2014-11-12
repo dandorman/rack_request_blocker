@@ -1,13 +1,21 @@
 # RackRequestBlocker
 
-TODO: Write a gem description
+Inserts a middleware at the top of the stack that stops further requests and
+waits for in-flight requests to complete before proceeding. This is helpful for
+Capybara full-stack tests where AJAX requests still in-flight interfere with
+test tear-down. Based on ["Tearing Down Capybara Tests of AJAX Pages"][1] by
+Joel Turkel at Salsify.
+
+[1]: http://blog.salsify.com/engineering/tearing-capybara-ajax-tests
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile:
 
 ```ruby
-gem 'rack_request_blocker'
+group :test do
+  gem "rack_request_blocker"
+end
 ```
 
 And then execute:
@@ -20,7 +28,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add the following line to your `spec_helper.rb` file:
+
+```ruby
+require "rack_request_blocker/rspec"
+```
+
+That's it.
 
 ## Contributing
 
