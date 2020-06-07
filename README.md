@@ -1,12 +1,16 @@
 # RackRequestBlocker
 
+**NOTE**: Please see [this repo][1] if you're looking for the
+`rack_request_blocker` gem.
+
 Inserts a middleware at the top of the stack that stops further requests and
 waits for in-flight requests to complete before proceeding. This is helpful for
 Capybara full-stack tests where AJAX requests still in-flight interfere with
-test tear-down. Based on ["Tearing Down Capybara Tests of AJAX Pages"][1] by
+test tear-down. Based on ["Tearing Down Capybara Tests of AJAX Pages"][2] by
 Joel Turkel at Salsify.
 
-[1]: http://blog.salsify.com/engineering/tearing-capybara-ajax-tests
+[1]: https://github.com/friendsoftheweb/rack_request_blocker
+[2]: http://blog.salsify.com/engineering/tearing-capybara-ajax-tests
 
 ## Installation
 
